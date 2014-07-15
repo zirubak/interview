@@ -1,30 +1,72 @@
-//http://www.geeksforgeeks.org/write-your-own-atoi/
+//http://www.careercup.com/question?id=7837664
 //
-//The atoi() function takes a string (which represents an integer) as an argument and returns its value.
+//implement atoi function.
 //
-//Following is a simple implementation. We initialize result as 0. We start from the first character and update result for every character.
+//here it is in C. it handles leading whitespaces & trailing whitespaces.
+//if characters are found in between numbers, it ignores them.
+//it allows negative numbers,
+//and it detects buffer overflows.
 
 #include <stdio.h>
 
-// simple atoi() function
-int myAtoI(char* str)
+int my_atoi(char* string)
 {
-	int res = 0; // initialize result
-	int i = 0;
+	int negative = 0;
+	int value = 0;
+	char* start;
 
-	for(i = 0; str[i] != '\0'; ++i)
+	if(string == NULL)	// if data passed in is null
+		return 0;
+
+	start = string;
+
+	while(*start == ' ')	//ignore pre-white space
+		start++;
+
+	if(*start == '-')
 	{
-		res = res * 10 + str[i] -'0';
+		negative = 1;
+		start++;
 	}
 
-	return res;
+	while(*start != '\0')
+	{
+		//numeric characters
+		if(*start >= '0' && *start <= '9')
+		{
+			//check for + buffer overflow
+			if(negative == 0 && value * 10 + ((int)*start) - '0' < value)
+			{
+				printf("buffer overflow \n");
+				return 0;
+			}
+
+			//check for - buffer overflow
+			if(negative == 1 && ((-value) * 10) - ((int)*start - '0') > -value)
+			{
+				printf("buffer overflow \n");
+				return 0;
+			}
+
+			value = value * 10 + ((int)*start - '0');
+		}
+
+		start++;
+	}
+
+	if(negative)
+		value = -value;
+
+	return value;
 }
 
-int main()
+
+int main(void)
 {
-	char *str = "89789";
-	int val = myAtoI(str);
-	printf("%d", val);
+	int rtn = 0;
+	char* string = "    1234ab56789";
+	rtn = my_atoi(string);
+	printf("%d \n", rtn);
 
 	return 0;
 }
