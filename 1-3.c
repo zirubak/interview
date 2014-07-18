@@ -3,10 +3,7 @@
 //FOLLOW UP Write the test cases for this method.
 
 //reference solution
-//http://cs-technotes.blogspot.com/2010/11/remove-duplicate-characters-in-string.html
-
-/*if don't use extra buffer or extra data structure. two methods: 1, sort the array in place, then scan, time complexity is O(nlogn) 2,
- * for each character,check whether it's met before. time complexity = O(n^2). Here I implement method 2*/
+//coding interview page 97
 
 #include <stdio.h>
 #include <string.h>
@@ -14,36 +11,37 @@
 
 char* inplaceRemoveDups(char* s)
 {
-	if(!s) return NULL;
+	char* err = "Error";
+	if(s == NULL) return err;
 
 	int len = strlen(s);
-	int p, q, idx = -1;
+	if(len < 2) return err;
 
-	for(p = 0; p < len; p++)
+	int tail = 1;
+	int i = 0;
+
+	for(i = 1; i < len; ++i)
 	{
-		char tmp = s[p];
-		bool flag = true;
-
-		for(q = 0; q < p; q++)
+		int j;
+		for(j = 0; j < tail; ++j)
 		{
-			if(s[q] == tmp)
-			{
-				flag = false;
+			if(s[i] == s[j])
 				break;
-			}
 		}
-		if(flag)
-			s[++idx] = s[q];
+		if(j == tail)
+		{
+			s[tail] = s[i];
+			++tail;
+		}
 	}
-
-	s[++idx] = '\0';
+	s[tail] = '\0';
 
 	return s;
 }
 
 int main(void)
 {
-	char test[] = "1112232";
+	char test[] = "aaabbb";
 	char* rtn = NULL;
 
 	rtn = inplaceRemoveDups(test);
