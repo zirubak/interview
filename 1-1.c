@@ -11,13 +11,20 @@ int is_uniq_using_big_operation(char *str)
     for(i = 0; i < strlen(str); i++)
     {
         value = str[i] - 'a';
-        if(flag & (1 << value)) {
+
+        if(flag & (1 << value))
+        {
         	printf("String is not unique!! \n");
             return false;
         }
-        flag |= (1 << value);
+        else
+        {
+            flag |= (1 << value);
+        }
     }
+
     printf("String is unique!! \n");
+
     return true;
 }
 
